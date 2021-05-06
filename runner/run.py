@@ -1,8 +1,11 @@
-from random import random
+from simulation import Simulation
 
-from models.Player import Player
+object_season_winners, array_season_winners = Simulation.init_simulation()
 
-print("Iniciando ...")
+print("Objeto resultados 1000 temporadas")
+print(object_season_winners)
 
-random_number = random()
-print(random_number)
+print("-------")
+print("Resultados por temporada")
+for season_winner in array_season_winners:
+	print(season_winner)

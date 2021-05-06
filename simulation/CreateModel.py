@@ -1,3 +1,5 @@
+from random import random
+
 from nba_api.stats.endpoints import teamestimatedmetrics
 
 from models.Conference import Conference
@@ -16,25 +18,32 @@ southwest = Division('Southwest')
 
 
 def fillDivisionsTeams():
-    result = teamestimatedmetrics.TeamEstimatedMetrics('00', '2019-20', 'Regular Season')
+    result = teamestimatedmetrics.TeamEstimatedMetrics('00', '2020-21', 'Regular Season')
 
     equipos = result.get_dict()["resultSet"]["rowSet"]  # vector de equipos
 
     for i in range(0, len(equipos)):
+        random_number = random()
+        change_number = 0
+        if random_number > 0.7:
+            change_number = 0.02
+        else:
+            change_number = -0.02
+
         equipo = equipos[i]
 
         if equipo[1] in {1610612737, 1610612748, 1610612753, 1610612764, 1610612766}:
-            southeast.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            southeast.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
         elif equipo[1] in {1610612738, 1610612751, 1610612752, 1610612755, 1610612761}:
-            atlantic.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            atlantic.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
         elif equipo[1] in {1610612739, 1610612741, 1610612749, 1610612754, 1610612765}:
-            central.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            central.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
         elif equipo[1] in {1610612740, 1610612742, 1610612745, 1610612759, 1610612763}:
-            southwest.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            southwest.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
         elif equipo[1] in {1610612743, 1610612750, 1610612757, 1610612760, 1610612762}:
-            northwest.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            northwest.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
         else:
-            pacific.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5]))
+            pacific.add_team(Team(equipo[1], equipo[0], 0, equipo[4], equipo[5] + change_number))
 
 
 def fillConferences():
