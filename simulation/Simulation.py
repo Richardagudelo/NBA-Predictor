@@ -14,18 +14,31 @@ west_playoff = []
 
 
 def restart_east_conference(east_conference):
+	"""
+	Renicia la conferencia este para cada simulacion de temporada
+	:param east_conference: la conferencia este a restar
+	"""
 	for eadiv in east_conference.divisions:
 		for eadivteam in eadiv.teams:
 			eadivteam.change_win_prob()
 
 
 def restart_west_conference(west_conference):
+	"""
+	Reinicia la conferencia oeste para cada simulacion de temporada
+	:param west_conference:  conferencia oeste a restart
+	"""
 	for wediv in west_conference.divisions:
 		for wedivteam in wediv.teams:
 			wedivteam.change_win_prob()
 
 
 def restart_all(east_playoff, west_playoff):
+	"""
+	Llama a los de reniciar conferencias y reinicia tambien los playoffs de una temporada
+	:param east_playoff: el east_playoff a reiniciar
+	:param west_playoff: el west_playoff a reiniciar
+	"""
 	restart_east_conference(east_conference)
 	restart_west_conference(west_conference)
 	east_playoff = []
@@ -33,12 +46,22 @@ def restart_all(east_playoff, west_playoff):
 
 
 def simulate_game(the_team=Team):
+	"""
+	Simula un juego con montecarlo, usando la prob de ganar de ese equipo
+	:param the_team: equipo parametro
+	"""
 	random_number = random()
 	if random_number < the_team.win_prob:
 		the_team.add_win()
 
 
 def simulate_match(team1=Team, team2=Team):
+	"""
+	Simula un juego entre dos equipos
+	:param team1:
+	:param team2:
+	:return: el ganador despues de jugar 100 juegos entre ambos equipos
+	"""
 	for ipi in range(0, 100):
 		simulate_game(team1)
 		simulate_game(team2)
@@ -55,6 +78,12 @@ def simulate_match(team1=Team, team2=Team):
 
 
 def simulate_playoff_match(team1: Team, team2: Team):
+	"""
+	Simula un partido de playoffs, gana el primero que gane 4 juegos
+	:param team1:
+	:param team2:
+	:return: el equipo ganador del bracket playoff
+	"""
 	team1.restart_playoff_wins()
 	team2.restart_playoff_wins()
 
@@ -72,6 +101,10 @@ def simulate_playoff_match(team1: Team, team2: Team):
 
 
 def simulate_division(division=Division):
+	"""
+	Simula una division completa
+	:param division: a simular
+	"""
 	for team in division.teams:
 		for team2 in division.teams:
 			if team.id != team2.id:
@@ -80,6 +113,10 @@ def simulate_division(division=Division):
 
 
 def simulate_div_vs_div(conference=Conference):
+	"""
+	Simula una division vs todas las otras divisiones de la conferencia dada
+	:param conference: la conferencia donde estan las divisiones
+	"""
 	for div in conference.divisions:
 		simulate_division(div)
 		simulate_division(div)
@@ -93,6 +130,11 @@ def simulate_div_vs_div(conference=Conference):
 
 # Conferencia este - todos los partidos de conferencia
 def simulate_east_conference(east_conference=Conference):
+	"""
+	Simula la conferencia este completa, todas sus divisiones contra todas las otras
+	:param east_conference:
+	:return: todos los equipos de la conferencia este
+	"""
 	simulate_div_vs_div(east_conference)
 	east_teams = []
 	for division in east_conference.divisions:
@@ -103,6 +145,11 @@ def simulate_east_conference(east_conference=Conference):
 
 # Conferencia oeste - todos los partidos de conferencia
 def simulate_west_conference(west_conference=Conference):
+	"""
+	Simula toda la conferencia oeste, divisiones contra divisiones
+	:param west_conference:
+	:return: todos los equipos de la conferencia oeste
+	"""
 	simulate_div_vs_div(west_conference)
 	west_teams = []
 	for division in west_conference.divisions:
@@ -112,21 +159,40 @@ def simulate_west_conference(west_conference=Conference):
 
 
 def simulate_conference_vs_conference(east_conference=[], west_conference=[]):
+	"""
+	Simula una conferencia vs otra
+	:param east_conference:
+	:param west_conference:
+	"""
 	for east_team in east_conference:
 		for west_team in west_conference:
 			simulate_match(east_team, west_team)
 
 
 def sort_teams_by_wins(teams):
+	"""
+	Ordena un array de equipos por la cantidad de juegos ganados de mayor a menor
+	:param teams: los equipos a ordenar
+	:return: los equipos ordenados
+	"""
 	teams.sort(key=lambda team: team.wins, reverse=True)
 	return teams
 
 
 def get_play_offs_teams(teams):
+	"""
+	Devuelve los top 8 equipos de una conferencia
+	:param teams: los equipos de una conferencia
+	:return: los primeros 8 equipos de la lista (lista de equipos ordenada por victorias)
+	"""
 	return teams[:8]
 
 
 def calculate_east_and_west_play_offs():
+	"""
+	Simula las conferencias y calcula los playoffs resultantes de cada una
+	:return: los playoffs de cada una
+	"""
 	aux_east_playoff = simulate_east_conference(east_conference)
 	# simula la conferencia
 	aux_west_playoff = simulate_west_conference(west_conference)
@@ -148,6 +214,8 @@ def calculate_east_and_west_play_offs():
 def create_conference_playoff_bracket(out_east_or_west_playoff):
 	"""
 	Crea el bracket exterior (octavos de final) de la conferencia este o este, la que reciba por parametro
+	:param out_east_or_west_playoff: los mejores equipos de una conferencia
+	:return: los octavos de final de una conferencia
 	"""
 	playoff_bracket = []
 	while len(out_east_or_west_playoff) > 0:
@@ -160,7 +228,9 @@ def create_conference_playoff_bracket(out_east_or_west_playoff):
 
 def simulate_octavos_playoff(octavos_bracket: PlayOffBracket):
 	"""
-	Simula el playoff mas exterior
+	Simula los octavos de final de un playoff
+	:param octavos_bracket: octavos de final a simular, puede ser de la conferencia este u oeste
+	:return: los cuartos de final resultantes de jugar los octavos de final
 	"""
 	cuartos = []
 
@@ -193,7 +263,7 @@ def simulate_cuartos_playoff(cuartos_bracket: PlayOffBracket):
 def simulate_semifinals_playoff(semifinal_este: PlayOffBracket, semifinal_oeste: PlayOffBracket):
 	"""
 	Simula una semifinal
-	:param semifinal:
+	:param semifinal_este, semifinal_oeste semifinales a simular, devuelve la final
 	:return: la FINAL
 	"""
 	return PlayOffBracket.PlayOffBracket(
@@ -204,7 +274,8 @@ def simulate_semifinals_playoff(semifinal_este: PlayOffBracket, semifinal_oeste:
 
 def simulate_to_calculate_final_of_season():
 	"""
-	Inicia la simulación
+	Llama todos los metodos de juegos de playoff anteriores, octavos, cuartos y semifinal, para generar la final
+	:return: los equipos de la final de la temporada
 	"""
 	east_playoff, west_playoff = calculate_east_and_west_play_offs()
 
@@ -221,6 +292,10 @@ def simulate_to_calculate_final_of_season():
 
 
 def simulate_season():
+	"""
+	Simula una temporada, obtiene la final y la simula
+	:return: El ganador final de la temporada
+	"""
 	final = simulate_to_calculate_final_of_season()
 	final_winner = simulate_playoff_match(final.teamone, final.teamtwo)
 	final_winner.add_season_win()
@@ -228,10 +303,16 @@ def simulate_season():
 
 
 def init_simulation():
+	"""
+	Inicia la simulacion, aca se simulan las 50, 100 o 1000 temporadas
+	:return: los resultados de simular n temporadas
+				un objeto del nombre de un equipo y la cantidad de veces que temporadas,
+				un array del resultado de cada temporada
+	"""
 	seasons_results = {}
 	array_results = []
 
-	for it in range(0, 1000):
+	for it in range(0, 50):
 		restart_all(east_playoff, west_playoff)
 
 		season_winner = simulate_season()
@@ -242,7 +323,6 @@ def init_simulation():
 		array_results.append(season_winner)
 
 	return seasons_results, array_results
-
 
 # seas_results, arrayr = init_simulation()
 # print(seas_results)
