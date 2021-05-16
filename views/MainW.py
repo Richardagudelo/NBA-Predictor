@@ -6,7 +6,6 @@ raiz.title("Simulador NBA 4000 PRO 4K V1.0")
 raiz.geometry("1200x1000")
 raiz.config(bg="pale green")
 
-
 def graficarImagen(text):
     miFrame = Frame()
     miFrame.pack()
@@ -17,7 +16,8 @@ def graficarImagen(text):
     # aun no se como tomar la carpeta del proyecto como raiz y de ahi cargar la imagen
 # r"",text,".png")
     # "/Lenna.png"
-    imagen = PhotoImage(file=r"C:\Users\andre\Desktop\NBA-Predictor\img" + "\\" + text)
+
+    imagen = PhotoImage(file=r"F:\Daniel Pinto\UPTC\10mo Semestre\Simulacion en computador\PFF\NBA-Predictor\img" + "\\" + text)
     label = Label(miFrame, image=imagen)
     label.pack()
     raiz.mainloop()
@@ -262,20 +262,58 @@ labelW22.place(x=820, y=500, width=130, height=40)
 
 # lista de los Finales Izq
 # ---------------------------------------
-labelEF1 = Label(raiz, text="Equipo 1")
-labelEF1.pack(anchor=CENTER)
-labelEF1.config(fg="black",  # Foreground
+labelEF = Label(raiz, text="Equipo 1")
+labelEF.pack(anchor=CENTER)
+labelEF.config(fg="black",  # Foreground
                 font=("Verdana", 12),
                 bd=4, relief="ridge")
-labelEF1.place(x=340, y=330, width=130, height=40)
+labelEF.place(x=340, y=330, width=130, height=40)
 
 # lista de los Finales Der
 # ---------------------------------------
-labelEF1 = Label(raiz, text="Equipo 1")
-labelEF1.pack(anchor=CENTER)
-labelEF1.config(fg="black",  # Foreground
+labelWF = Label(raiz, text="Equipo 1")
+labelWF.pack(anchor=CENTER)
+labelWF.config(fg="black",  # Foreground
                 font=("Verdana", 12),
                 bd=4, relief="ridge")
-labelEF1.place(x=720, y=330, width=130, height=40)
+labelWF.place(x=720, y=330, width=130, height=40)
 
-
+# Mostrar en pantalla los equipos y cruces
+def listOnScreen(eighth, quarter, semifinalE1, semifinalE2, semifinalW1, semifinalW2, final1, final2):
+    # Octavos east (izquierda)
+    labelE1.configure(text=eighth[0])
+    labelE2.configure(text=eighth[1])
+    labelE3.configure(text=eighth[2])
+    labelE4.configure(text=eighth[3])
+    labelE5.configure(text=eighth[4])
+    labelE6.configure(text=eighth[5])
+    labelE7.configure(text=eighth[6])
+    labelE8.configure(text=eighth[7])
+    # Octavos west (derecha)
+    labelW1.configure(text=eighth[8])
+    labelW2.configure(text=eighth[9])
+    labelW3.configure(text=eighth[10])
+    labelW4.configure(text=eighth[11])
+    labelW5.configure(text=eighth[12])
+    labelW6.configure(text=eighth[13])
+    labelW7.configure(text=eighth[14])
+    labelW8.configure(text=eighth[15])
+    # Cuartos east (izquierda)
+    labelE41.configure(text=quarter[0])
+    labelE42.configure(text=quarter[1])
+    labelE43.configure(text=quarter[2])
+    labelE44.configure(text=quarter[3])
+    # Cuartos west (derecha)
+    labelW41.configure(text=quarter[4])
+    labelW42.configure(text=quarter[5])
+    labelW43.configure(text=quarter[6])
+    labelW44.configure(text=quarter[7])
+    # Semifinal east (izquierda)
+    labelE21.configure(text=semifinalE1)
+    labelE22.configure(text=semifinalE2)
+    # Semifinal west (derecha)
+    labelW21.configure(text=semifinalW1)
+    labelW22.configure(text=semifinalW2)
+    # # FINAL FINAL
+    labelEF.configure(text=final1)
+    labelWF.configure(text=final2)

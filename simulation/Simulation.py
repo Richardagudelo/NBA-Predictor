@@ -5,13 +5,24 @@ from simulation import CreateModel
 CreateModel.initAll()
 # CreateModel.printAll()
 
-
+# agregar a un array phyton
 east_conference = CreateModel.get_conference_east()
 west_conference = CreateModel.get_conference_west()
 
 east_playoff = []
 west_playoff = []
 
+octavos_east_ui = []
+octavos_west_ui = []
+cuartos_east_ui = []
+cuartos_west_ui = []
+semifinal_east_ui = ''
+semifinal_west_ui = ''
+finalFinal = ''
+
+listEighth = []
+listQuarter = []
+listSemifinal = []
 
 def restart_east_conference(east_conference):
 	"""
@@ -237,13 +248,13 @@ def simulate_octavos_playoff(octavos_bracket: PlayOffBracket):
 	cuartos.append(
 		PlayOffBracket.PlayOffBracket(
 			simulate_playoff_match(octavos_bracket[0].teamone, octavos_bracket[0].teamtwo),
-			simulate_playoff_match(octavos_bracket[3].teamone, octavos_bracket[3].teamtwo)
+			simulate_playoff_match(octavos_bracket[1].teamone, octavos_bracket[1].teamtwo)
 		))
 
 	cuartos.append(
 		PlayOffBracket.PlayOffBracket(
 			simulate_playoff_match(octavos_bracket[2].teamone, octavos_bracket[2].teamtwo),
-			simulate_playoff_match(octavos_bracket[1].teamone, octavos_bracket[1].teamtwo)
+			simulate_playoff_match(octavos_bracket[3].teamone, octavos_bracket[3].teamtwo)
 		))
 
 	return cuartos
@@ -254,6 +265,7 @@ def simulate_cuartos_playoff(cuartos_bracket: PlayOffBracket):
 	Simula los cuartos de  final de una temporada y retorna la semifinal
 	:return: la semifinal de la temporada
 	"""
+
 	return PlayOffBracket.PlayOffBracket(
 		simulate_playoff_match(cuartos_bracket[0].teamone, cuartos_bracket[0].teamtwo),
 		simulate_playoff_match(cuartos_bracket[1].teamone, cuartos_bracket[1].teamtwo),
@@ -271,6 +283,8 @@ def simulate_semifinals_playoff(semifinal_este: PlayOffBracket, semifinal_oeste:
 		simulate_playoff_match(semifinal_oeste.teamone, semifinal_oeste.teamtwo)
 	)
 
+def llenarOctavos(east):
+	octavos_east_ui = east
 
 def simulate_to_calculate_final_of_season():
 	"""
@@ -280,13 +294,23 @@ def simulate_to_calculate_final_of_season():
 	east_playoff, west_playoff = calculate_east_and_west_play_offs()
 
 	octavos_east = create_conference_playoff_bracket(east_playoff)
+	global octavos_east_ui
+	octavos_east_ui = octavos_east
 	octavos_west = create_conference_playoff_bracket(west_playoff)
-
+	global octavos_west_ui
+	octavos_west_ui = octavos_west
 	cuartos_east = simulate_octavos_playoff(octavos_east)
+	global cuartos_east_ui
+	cuartos_east_ui = cuartos_east
 	cuartos_west = simulate_octavos_playoff(octavos_west)
-
+	global cuartos_west_ui
+	cuartos_west_ui = cuartos_west
 	semifinal_east = simulate_cuartos_playoff(cuartos_east)
+	global semifinal_east_ui
+	semifinal_east_ui = semifinal_east
 	semifinal_west = simulate_cuartos_playoff(cuartos_west)
+	global semifinal_west_ui
+	semifinal_west_ui = semifinal_west
 
 	return simulate_semifinals_playoff(semifinal_east, semifinal_west)
 
@@ -297,6 +321,8 @@ def simulate_season():
 	:return: El ganador final de la temporada
 	"""
 	final = simulate_to_calculate_final_of_season()
+	global finalFinal
+	finalFinal = final
 	final_winner = simulate_playoff_match(final.teamone, final.teamtwo)
 	final_winner.add_season_win()
 	return final_winner
@@ -329,3 +355,31 @@ def init_simulation():
 #
 # for k in arrayr:
 # 	print(k)
+
+# obtener lista octavos
+def getEighthList():
+	for ee in octavos_east_ui:
+		listEighth.append(ee.teamone.name)
+		listEighth.append(ee.teamtwo.name)
+	for we in octavos_west_ui:
+		listEighth.append(we.teamone.name)
+		listEighth.append(we.teamtwo.name)
+	return listEighth
+
+# obtener lista cuartos
+def getQuarterList():
+	for eq in cuartos_east_ui:
+		listQuarter.append(eq.teamone.name)
+		listQuarter.append(eq.teamtwo.name)
+	for wq in cuartos_west_ui:
+		listQuarter.append(wq.teamone.name)
+		listQuarter.append(wq.teamtwo.name)
+	return listQuarter
+
+# obtener semifinal
+def getSemifinal():
+	return semifinal_east_ui.teamone.name, semifinal_east_ui.teamtwo.name, semifinal_west_ui.teamone.name, semifinal_west_ui.teamtwo.name
+
+# obtener final
+def getFinal():
+	return finalFinal.teamone.name, finalFinal.teamtwo.name
