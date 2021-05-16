@@ -7,5 +7,15 @@ print(object_season_winners)
 
 print("-------")
 print("Resultados por temporada")
+
+aux = "";
 for season_winner in array_season_winners:
 	print(season_winner)
+	aux = season_winner.name
+
+from views import MainW
+MainW.graficarImagen(aux)
+
+
+
+

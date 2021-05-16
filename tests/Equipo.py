@@ -3,8 +3,9 @@ from nba_api.stats.static import teams
 
 teams = teams.get_teams()
 
-#{'id': 1610612737, 'full_name': 'Atlanta Hawks', 'abbreviation': 'ATL', 'nickname': 'Hawks', 'city': 'Atlanta', 'state': 'Atlanta', 'year_founded': 1949}
-#{'id': 1610612743, 'full_name': 'Denver Nuggets', 'abbreviation': 'DEN', 'nickname': 'Nuggets', 'city': 'Denver', 'state': 'Colorado', 'year_founded': 1976}
+# {'id': 1610612737, 'full_name': 'Atlanta Hawks', 'abbreviation': 'ATL', 'nickname': 'Hawks', 'city': 'Atlanta',
+# 'state': 'Atlanta', 'year_founded': 1949} {'id': 1610612743, 'full_name': 'Denver Nuggets', 'abbreviation': 'DEN',
+# 'nickname': 'Nuggets', 'city': 'Denver', 'state': 'Colorado', 'year_founded': 1976}
 
 dict_division = {}
 dict_conferences = {}
