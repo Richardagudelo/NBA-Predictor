@@ -1,11 +1,17 @@
+import tkinter
 from tkinter import *
 from tkinter import ttk
+
 
 raiz = Tk()
 raiz.title("Simulador NBA 4000 PRO 4K V1.0")
 raiz.geometry("1200x1000")
 raiz.config(bg="pale green")
+team_list = []
 
+def llenar_team_list(lista):
+    global team_list
+    team_list = lista
 
 def graficarImagen(text):
     miFrame = Frame()
@@ -17,7 +23,8 @@ def graficarImagen(text):
     # aun no se como tomar la carpeta del proyecto como raiz y de ahi cargar la imagen
 # r"",text,".png")
     # "/Lenna.png"
-    imagen = PhotoImage(file=r"C:\Users\andre\Desktop\NBA-Predictor\img" + "\\" + text)
+    #imagen = PhotoImage(file=r"C:\Users\andre\Desktop\NBA-Predictor\img" + "\\" + text)
+    imagen = PhotoImage(file=r"C:\Users\Usuario\PycharmProjects\NBA-Predictor\img" + "\\" + text)
     label = Label(miFrame, image=imagen)
     label.pack()
     raiz.mainloop()
@@ -41,8 +48,19 @@ def mostrarTabla():
     tabla.heading("#2", text="Victorias")
     tabla.heading("#3", text="Playoff Wins")
     tabla.heading("#4", text="Season Wins")
+    if len(team_list) > 0:
+        for season_winner in team_list:
+            tabla.insert("", tkinter.END, text=season_winner.name, values=(season_winner.win_prob,season_winner.wins,season_winner.playoffwins, season_winner.seasonwins))
+
+    scrollbar = ttk.Scrollbar(ventana, orient=tkinter.VERTICAL, command=tabla.yview)
+    tabla.configure(yscroll=scrollbar.set)
+    scrollbar.grid(row=1, column=1, sticky='ns')
+
     ventana.mainloop()
 
+def update():
+    global ventana
+    ventana.deiconify()
 
 butonTabla = Button(raiz, text="Mas informacion", command=mostrarTabla)
 butonTabla.place(x=500, y=510, width=200, height=40)
@@ -277,5 +295,6 @@ labelEF1.config(fg="black",  # Foreground
                 font=("Verdana", 12),
                 bd=4, relief="ridge")
 labelEF1.place(x=720, y=330, width=130, height=40)
+
 
 

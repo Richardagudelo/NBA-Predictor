@@ -12,9 +12,12 @@ aux = "";
 for season_winner in array_season_winners:
 	print(season_winner)
 	aux = season_winner.name
+	#print('--------------------->' + aux)
 
 from views import MainW
+MainW.llenar_team_list(array_season_winners)
 MainW.graficarImagen(aux)
+
 
 
 
